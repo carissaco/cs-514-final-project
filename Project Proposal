@@ -1,3 +1,5 @@
 My proposal for my final project is that I will make an educational question and answer game. 
 I can use openAI to generate the questions and answers that will be used in the game, and I think this game will be useful because I can ask openAI to generate questions and answers containing specific keywords to make the questions more memorable or fun.
 An example of how I can implement AI is I can ask openAI to give me a math word problem at 4th grade level math that involves animals. This could be helpful because creating questions that involve a topic that a student might be interested in, such as animals, could make learning math more fun.
+I think it would be a good idea to try to generate images as well to make the game more entertaining.
+I can also implement the login method so that each user can see their scores that they got on previous games.
