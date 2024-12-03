@@ -65,9 +65,9 @@ function LoginForm({LoginEvent}) {
 	// note the ? to show either login or logout button
 	return (
     <div >
-    { loggedUser?
-      <><p>user: {loggedUser.uid}</p> <button onClick={logoutGoogle}>Log out</button> </>
-      :<button onClick={signInWithGoogle}>Sign in with Google</button>
+    { 
+	  loggedUser ? <><p>user: {loggedUser.uid}</p> <button onClick={logoutGoogle}>Log out</button> </>
+      : <button onClick={signInWithGoogle}>Sign in with Google</button>
     } 
      
     </div>
