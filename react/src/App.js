@@ -18,16 +18,29 @@ function App() {
 	async function handleSubmit(event) {
         event.preventDefault();
         // axios.get(`https://diesel-command-442122-v6.wl.r.appspot.com/chat?title=${title}`) // my url
-        axios.get(`/chat?title=${title}`)
+        axios.get(`/getQuestion?title=${title}`)
+        .then(response => {
+          setAiResponse(response.data);
+          console.log('respond from chat', response.data)   
+        })
+        .catch(error => {
+        });
+        // do whatever on submit
+        console.log("submitted")
+  };
+
+  async function handleNextQuestion(event) {
+      event.preventDefault();
+      axios.get(`/nextQuestion`)
       .then(response => {
         setAiResponse(response.data);
         console.log('respond from chat', response.data)   
       })
       .catch(error => {
       });
-        // do whatever on submit
-        console.log("submitted")
-    };
+      // do whatever on submit
+      console.log("submitted")
+  };
 	
 	// this will be called by the LoginForm
 	function HandleLogin(user) {
@@ -62,6 +75,7 @@ function App() {
           <br />
           <button type="submit" >Submit</button>
         </form>
+        <button onClick={handleNextQuestion}>Next Question</button>
         { questionsAndChoices }
 
       </div>

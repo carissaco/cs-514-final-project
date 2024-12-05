@@ -1,39 +1,45 @@
-import { initializeApp } from 'firebase/app';
 //import { getAuth, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import React, {  useState, useEffect } from 'react';
+import { collection, getDoc, setDoc, doc } from "firebase/firestore";
+import { db } from "./Firebase";
 
 // LoginSuccessful is a function sent in by parent component
 function LoginForm({LoginEvent}) {
-	const firebaseConfig = {
-        apiKey: "AIzaSyCUkvhkLjaKXdby9rCY44Kokdp0UQU9X0g",
-        authDomain: "cs-514-final-proj.firebaseapp.com",
-        projectId: "cs-514-final-proj",
-        storageBucket: "cs-514-final-proj.firebasestorage.app",
-        messagingSenderId: "384553326685",
-        appId: "1:384553326685:web:027f04a52b3972ad6495b4",
-      };
-
-	initializeApp(firebaseConfig);
 	
 	const [loggedUser, setLoggedUser] = useState('');
 
 	// function to sign in with Google's page
-	const signInWithGoogle = () => {
-  	
+	const signInWithGoogle = async () => {
   		const provider = new GoogleAuthProvider();
   		const auth = getAuth();
   		// signInWithRedirect(auth, provider)
-        signInWithPopup(auth, provider)
-    	.then((result) => {
-      		// User signed in
-      		console.log(result.user);
-      		setLoggedUser(result.user)
-      	
-    	}).catch((error) => {
-      	// Handle Errors here.
-      		console.error(error);
-    	});
+
+		try {
+			const result = await signInWithPopup(auth, provider);
+			console.log(result.user);
+			setLoggedUser(result.user);
+			const docRef = doc(db, "UserScore", result.user.uid);
+			const docSnap = await getDoc(docRef);
+
+			if (docSnap.exists()) {
+				console.log("UserScore doc exists.", docSnap.data());
+				return;
+			} 
+			// Add UserScore doc
+			try {
+				await setDoc(doc(collection(db, "UserScore"), result.user.uid), {
+					email: result.user.email,
+					score: 100
+				});
+				console .log("Document written with ID: ", result.user.uid);
+			} catch (e) {
+				console.error("Error adding document: ", e);
+			}
+		} catch (e) {
+			// Handle Errors here.
+			console.error(e);
+		}
 	};
 	
 	// function to sign out

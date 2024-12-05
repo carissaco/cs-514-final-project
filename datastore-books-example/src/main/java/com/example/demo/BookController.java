@@ -19,6 +19,27 @@ public class BookController {
   private static String context;
   private static OpenAIConversation conversation = new OpenAIConversation("demo", "gpt-4o-mini");
 
+  
+  @GetMapping("/getQuestion")
+  @ResponseBody
+  @CrossOrigin(origins = "*")
+  public String getQuestion(@RequestParam String title) {
+
+     String mathQuestion = conversation.askQuestion("Respond in json format with the following keys: problem, solutionDescription, answerChoices, answer ", "Give me a math word problem involving " + title);
+
+    return mathQuestion;
+  }
+
+  @GetMapping("/nextQuestion")
+  @ResponseBody
+  @CrossOrigin(origins = "*")
+  public String nextQuestion() {
+
+     String mathQuestion = conversation.askQuestion("Respond in json format with the following keys: problem, solutionDescription, answerChoices, answer ", "Next question.");
+
+    return mathQuestion;
+  }
+
   public BookController(BookRepository bookRepository) {
     this.bookRepository = bookRepository;
   }
@@ -41,18 +62,7 @@ public class BookController {
     List<Book> bookList = new ArrayList<>();
     books.forEach(bookList::add);
     return bookList;
-  }
-
-  @GetMapping("/chat")
-  @ResponseBody
-  @CrossOrigin(origins = "*")
-  public String chat(@RequestParam String title) {
-
-     String mathQuestion = conversation.askQuestion("Respond in json format", "Give me a math word problem involving " + title);
-
-    return mathQuestion;
-  }
-  
+  }  
 
   @GetMapping("/findAllBooks")
   @ResponseBody
