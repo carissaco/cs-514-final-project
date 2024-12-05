@@ -1,0 +1,9 @@
+apiKey: "AIzaSyCMtXr7QsXamgnt6DIw3p0UylpS5bl6oZA",
+  authDomain: "bookstorelab-ffd48.firebaseapp.com",
+  projectId: "bookstorelab-ffd48",
+  storageBucket: "bookstorelab-ffd48.firebasestorage.app",
+  messagingSenderId: "705708716814",
+  appId: "1:705708716814:web:f078e92c74a86815319d5f",
+  measurementId: "G-7VSYKMWN1Y"
+
+  
