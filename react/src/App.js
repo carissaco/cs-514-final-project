@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Text, PrimaryButton } from '@fluentui/react';
-import axios from 'axios';
+
 import './App.css';
 import LoginForm from './LoginForm'
 import Game from './Game'
