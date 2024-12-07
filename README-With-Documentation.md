@@ -88,4 +88,4 @@ npm start
 ```
 Now, you can go to your [localhost:3000](http://localhost:3000/) on the web browser and start playing the game!
 
-notes: I used fluent UI, which is a library from microsoft to get the nice looking UI for my website. 
+notes: I used fluent UI, which is a library from microsoft to get the nice looking UI for my website. I use a JavaSpring backend.
