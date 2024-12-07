@@ -12,4 +12,4 @@ cd cs-514-final-project
 cd react
 npm install
 npm start
-
+Now, you can start playing the math word problem game!
