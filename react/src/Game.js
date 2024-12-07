@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { TextField, PrimaryButton, Stack, StackItem, ChoiceGroup } from '@fluentui/react';
- 
+import { 
+    TextField, PrimaryButton, Stack, StackItem, ChoiceGroup, 
+    Label, Spinner 
+} from '@fluentui/react';
+import { collection, getDoc, setDoc, doc } from "firebase/firestore";
+import { db } from "./Firebase";
 
-function Game(){
+function Game({userScore, loggedUser, setUserScore}){
     const [topic, setTopic] = useState(''); 
     const sectionStackTokens= { childrenGap: 10 }
     const [topicError, setTopicError] = useState(null)
     const [aiQuestion, setAIQuestion] = useState(null)
     const [userAnswerSelected, setUserAnswerSelected] = useState(null)
     const [userAnswerSubmitted, setUserAnswerSubmitted] = useState(null)
+    const [loadingQuestion, setLoadingQuestion] = useState(false)
 
     function handleTitleChange(event){
         setTopic(event.target.value)
@@ -28,9 +33,11 @@ function Game(){
     }
     async function getAIQuestion() {
         // axios.get(`https://diesel-command-442122-v6.wl.r.appspot.com/chat?title=${title}`) // my url
+        setLoadingQuestion(true)
         axios.get(`/getQuestion?title=${topic}`)
         .then(response => {
             setAIQuestion(response.data);
+            setLoadingQuestion(false)
             console.log('respond from chat', response.data)   
         })
         .catch(error => {
@@ -51,17 +58,26 @@ function Game(){
         setUserAnswerSelected(option);
       }
 
-    function handleSubmitAnswer(){
+    async function handleSubmitAnswer() {
         if(userAnswerSelected != null){
+            // update question count
+            const updateUserScore = {
+                questionCount : userScore.questionCount + 1,
+            }
             // compare to AI answer
             if(userAnswerSelected.key === aiQuestion.answer){
                 console.log("correct!")
+                // update correct question count
+                updateUserScore.correctCount = userScore.correctCount + 1 
                 setUserAnswerSubmitted(true)
             } else{
                 // say incorrect and display solution
                 console.log("incorrect")
                 setUserAnswerSubmitted(false)
             }
+            // update firebase with updated userScore
+            await setDoc(doc(collection(db, "UserScore"), loggedUser.uid), updateUserScore);
+            setUserScore(updateUserScore)
         }
     }
 
@@ -122,6 +138,7 @@ function Game(){
                 errorMessage={topicError} 
                 />
             <PrimaryButton text="Submit Topic" onClick={handleSubmitTopic} />
+            {loadingQuestion ? <Spinner label="Generating question..." />  : null} {/*  if loading question is true, display spinner, if false, display nothing*/}
             { aiQuestion ? questionStack : null }
             { answerStack }
             { 

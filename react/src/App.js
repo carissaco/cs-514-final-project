@@ -7,16 +7,26 @@ import Game from './Game'
 
 function App(){
   const [loggedUser, setLoggedUser] = useState('');
+  const [userScore, setUserScore] = useState(null);
 
   return (
     <Stack >
       <Stack.Item align="center">
         <Text variant={'xxLarge'}>Let's solve math word problems</Text>
       </Stack.Item>
-      <LoginForm onLoginLogout={ setLoggedUser } /> {/* getting the LoginForm function from LoginForm.js. onLoginLogout is gonna be the setLoggedUser function */}
+      <LoginForm 
+        setLoggedUser={ setLoggedUser } 
+        setUserScore={setUserScore } 
+        loggedUser={loggedUser } 
+        userScore={userScore }
+      /> {/* getting the LoginForm function from LoginForm.js. onLoginLogout is gonna be the setLoggedUser function */}
       {
         loggedUser ? (
-          <Game/>
+          <Game 
+          userScore={userScore} 
+          loggedUser = {loggedUser} 
+          setUserScore = {setUserScore}
+          />
         ) : null
       }
     </Stack>

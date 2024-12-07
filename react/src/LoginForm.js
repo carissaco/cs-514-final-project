@@ -6,10 +6,30 @@ import { db } from "./Firebase";
 import { Stack, Text, PrimaryButton, DefaultButton } from '@fluentui/react';
 
 
-function LoginForm({ onLoginLogout }){
-
-	const [loggedUser, setLoggedUser] = useState('');
-
+function LoginForm({ loggedUser, setLoggedUser, userScore, setUserScore }){
+	async function initializeLogin(user){
+		console.log(user);
+		setLoggedUser(user);
+		const docRef = doc(db, "UserScore", user.uid);
+		const docSnap = await getDoc(docRef);
+		// const unsub = onSnapshot(docRef, (doc) => {
+		// 	console.log("Current data: ", doc.data());
+		// });
+		if (docSnap.exists()) {
+			setUserScore(docSnap.data())
+			console.log("UserScore doc exists.", docSnap.data());
+			return;
+		} 
+		// Add UserScore doc
+		try { // if the doc does not exist
+			const userScore = {questionCount : 0 , correctCount : 0} // dictionary with userScore keys and values
+			await setDoc(doc(collection(db, "UserScore"), user.uid), userScore);
+			setUserScore(docSnap.data());
+			console.log("Document written with ID: ", user.uid);
+		} catch (e) {
+			console.error("Error adding document: ", e);
+		}		
+	}
 	const signInWithGoogle = async () => {
   		const provider = new GoogleAuthProvider();
   		const auth = getAuth();
@@ -17,26 +37,7 @@ function LoginForm({ onLoginLogout }){
 
 		try {
 			const result = await signInWithPopup(auth, provider);
-			onLoginLogout(result.user);
-			console.log(result.user);
-			setLoggedUser(result.user);
-			const docRef = doc(db, "UserScore", result.user.uid);
-			const docSnap = await getDoc(docRef);
-
-			if (docSnap.exists()) {
-				console.log("UserScore doc exists.", docSnap.data());
-				return;
-			} 
-			// Add UserScore doc
-			try {
-				await setDoc(doc(collection(db, "UserScore"), result.user.uid), {
-					email: result.user.email,
-					score: 100
-				});
-				console .log("Document written with ID: ", result.user.uid);
-			} catch (e) {
-				console.error("Error adding document: ", e);
-			}
+			await initializeLogin(result.user)
 		} catch (e) {
 			// Handle Errors here.
 			console.error(e);
@@ -45,7 +46,6 @@ function LoginForm({ onLoginLogout }){
 	
 	// function to sign out
 	function logoutGoogle () {
-		onLoginLogout(null);
 		const auth=getAuth();
 		auth.signOut();
 		setLoggedUser(null)
@@ -57,10 +57,9 @@ function LoginForm({ onLoginLogout }){
 			if (user) {
     			// User is signed in.
     			console.log("User is signed in:", user);
+    		
     			
-    			
-    			setLoggedUser(user);
-				onLoginLogout(user);
+    			initializeLogin(user);
     		
   			} else {
     		// No user is signed in.
@@ -71,8 +70,12 @@ function LoginForm({ onLoginLogout }){
 
 	return (
 		loggedUser ? (
-			<Stack.Item align="center">
-				<DefaultButton onClick={logoutGoogle} text="Log out"/>
+			<Stack.Item>
+				<Stack enableScopedSelectors horizontal horizontalAlign="space-between">
+					<Text variant="large">{loggedUser.email}</Text>
+					{userScore ? <Text variant="large">Questions Answered: {userScore.questionCount}</Text> : null}
+					<DefaultButton onClick={logoutGoogle} text="Log out"/>
+				</Stack>
 			</Stack.Item>
 		)
 		: (
