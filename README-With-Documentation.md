@@ -1,6 +1,6 @@
 #cs-514-final-project
 
-Folder with test videos: https://drive.google.com/file/d/12aw3AT93oUftMA_AHxJd1Yp7WElT2q1L/view?usp=sharing
+Folder with test videos: https://drive.google.com/drive/folders/10RdF64E74BG0VZNFY13ItfsW-fu4Igxx?usp=drive_link
 
 
 Overview of project— what problem are you solving, who is the client or target audience, and what is the plan moving forward for the project (after this class is over):
