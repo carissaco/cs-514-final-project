@@ -26,7 +26,10 @@ function Game({userScore, loggedUser, setUserScore}){
             setTopicError("Don't forget to type a topic!")
         } else{
             setTopicError(null)
-            getAIQuestion()
+            setAIQuestion(null)
+            setUserAnswerSubmitted(null)
+            setUserAnswerSelected(null)
+            getAIQuestion()  
         }
         
 
