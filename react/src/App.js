@@ -10,7 +10,9 @@ function App(){
   const [userScore, setUserScore] = useState(null);
 
   return (
-    <Stack >
+    <Stack tokens={ {
+      padding: 20
+    } }>
       <Stack.Item align="center">
         <Text variant={'xxLarge'}>Let's solve math word problems</Text>
       </Stack.Item>

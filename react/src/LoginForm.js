@@ -24,7 +24,7 @@ function LoginForm({ loggedUser, setLoggedUser, userScore, setUserScore }){
 		try { // if the doc does not exist
 			const userScore = {questionCount : 0 , correctCount : 0} // dictionary with userScore keys and values
 			await setDoc(doc(collection(db, "UserScore"), user.uid), userScore);
-			setUserScore(docSnap.data());
+			setUserScore(userScore);
 			console.log("Document written with ID: ", user.uid);
 		} catch (e) {
 			console.error("Error adding document: ", e);

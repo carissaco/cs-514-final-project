@@ -25,7 +25,7 @@ public class BookController {
   @CrossOrigin(origins = "*")
   public String getQuestion(@RequestParam String title) {
 
-     String mathQuestion = conversation.askQuestion("Respond in json format with the following keys: problem, solutionDescription, answerChoices, answer ", "Give me a math word problem involving " + title);
+     String mathQuestion = conversation.askQuestion("Respond in json format with the following keys: problem, solutionDescription, answerChoices as an object with keys {A, B, C, D}, answer ", "Give me a math word problem involving " + title);
 
     return mathQuestion;
   }
