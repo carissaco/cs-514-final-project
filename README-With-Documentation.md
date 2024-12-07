@@ -2,6 +2,7 @@
 
 Folder with test videos: https://drive.google.com/file/d/12aw3AT93oUftMA_AHxJd1Yp7WElT2q1L/view?usp=sharing
 
+
 Overview of project— what problem are you solving, who is the client or target audience, and what is the plan moving forward for the project (after this class is over):
 
 The problem I am solving is that some kids might not like solving math problems because they get bored or have a short attention span.
@@ -86,3 +87,5 @@ npm install
 npm start
 ```
 Now, you can go to your [localhost:3000](http://localhost:3000/) on the web browser and start playing the game!
+
+notes: I used fluent UI, which is a library from microsoft to get the nice looking UI for my website. 
